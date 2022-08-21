@@ -25,6 +25,7 @@ typedef struct philosopher
 	long	time_sleep;
 	long	current_time;
 	long	time_last_meal;
+	long	die;
 	t_data	*data;
 }	t_philos;
 
@@ -64,20 +65,45 @@ void	eating(t_philos *p)
 	print ("has taken a fork", p);
 	pthread_mutex_lock(&forks[p->r_f]);
 	print ("has taken a fork", p);
-	p->time_last_meal = get_time();
-	print("is eating", p);
+	print("\033[32mis eating\033[0m", p);
+	//p->time_last_meal = get_time();
 	ft_usleep(p->time_eat);
-	
 	pthread_mutex_unlock(&forks[p->l_f]);
 	pthread_mutex_unlock(&forks[p->r_f]);
 }
 
-
+// sleep and think display
 void sleeping_n_thinking(t_philos *p)
 {
 	print("is sleeping", p);
 	ft_usleep(p->time_sleep);
 	print("is thinking", p);
+}
+
+// check philosopher if diey
+int	check_death(t_philos *p)
+{
+	if (p->time_die - p->time_last_meal >= 0)
+	{
+
+		p->die = 1;
+		return (1);
+	}
+	else
+		return (0);
+}
+
+void	death_time(t_philos *p)
+{
+	pthread_mutex_lock (&writing);
+	printf ("%ld %d died\n", get_time() - p->time_last_meal, p->name);
+	pthread_mutex_unlock(&writing);
+}
+
+void	check_1(void *a)
+{
+	t_philos *aa = (t_philos *)a;
+	aa->time_last_meal = 150;
 }
 
 void	*routine(void *arg)
@@ -92,7 +118,6 @@ void	*routine(void *arg)
 		eating(p);
 		sleeping_n_thinking(p);
 	}
-
 	return (NULL);
 }
 
@@ -100,7 +125,7 @@ void	*routine(void *arg)
 int	main (int ac, char **av)
 {
 	pthread_t		thread[atoi(av[1])];
-	t_philos		ph[atoi(av[1])];
+	t_philos		*ph;
 	t_data		*data = malloc(sizeof(t_data));
 
 
@@ -111,6 +136,7 @@ int	main (int ac, char **av)
 	}
 	int i = 0;
 	int total = atoi(av[1]);
+	ph = malloc (sizeof(t_philos) * atoi(av[1]));
 	forks = malloc (sizeof(pthread_mutex_t) * atoi(av[1]));
 	while (i < total)
 	{
@@ -123,11 +149,11 @@ int	main (int ac, char **av)
 		ph[i].time_sleep = atoi(av[4]);
 		ph[i].current_time = 0;
 		ph[i].data = data;
-		ph[i].time_last_meal = 0;
+		ph[i].time_last_meal = 10;
+		ph[i].die = 0;
 		i++;
-	}
+	};
 	i = 0;
-
 	pthread_mutex_init(&writing, NULL);
 	while (i < total)
 	{
@@ -139,9 +165,32 @@ int	main (int ac, char **av)
 	while (++i < total) 
 	{
 		ph[i].current_time = (ph[i].data)->start_time;
+		ph[i].time_last_meal = get_time();
 		pthread_create(&thread[i], NULL, &routine, &ph[i]);
-		usleep(50);
+		usleep(300);
 	}
+	while (1)
+	{
+		i = -1;
+		int x = 0;
+		while (++i < total)
+		{
+			if (get_time() - ph[i].time_last_meal >= ph[i].time_die)
+			{
+				printf ("\033[0;31m %ld  %d died\n", get_time() - ph[i].time_last_meal, ph[i].name);
+				i = -1;
+				while (++i < total)
+				{
+					pthread_detach(thread[i]);
+				}
+				x= 1;
+				break ;
+			}
+		}
+		if (x == 1)
+			break;
+	}
+
 	i = 0;
 	while (i < total)
 	{
