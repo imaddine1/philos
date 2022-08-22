@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <signal.h>
 
 //if philo didn't start eating from last meal or begging the semulation they die
 
@@ -60,7 +61,7 @@ void	print(char *msg, t_philos *p)
 
 
 
-int	eating(t_philos *p)	
+void	eating(t_philos *p)	
 {
 	long	time;
 
@@ -71,15 +72,16 @@ int	eating(t_philos *p)
 	print("\033[32mis eating\033[0m", p);
 	p->time_last_meal = get_time();
 	ft_usleep(p->time_eat);
-	time = get_time() - p->time_last_meal;
 	pthread_mutex_unlock(&forks[p->l_f]);
 	pthread_mutex_unlock(&forks[p->r_f]);
-	if (time >= p->time_die)
+	/*printf ("this is time %ld and his name is %d\n", p->time_last_meal, p->name);
+	if (p->time_last_meal >= p->time_die)
 	{
-		//printf ("this is me %d and i take food in %ld\n\n", p->name, time);	
+		pthread_mutex_lock(&writing);
 		return(1);
 	}
 	return (0);
+	pthread_mutex_unlock(&writing);*/
 }
 
 // sleep and think display
@@ -102,17 +104,12 @@ void	*routine(void *arg)
 		ft_usleep(50);
 	while (1)
 	{
-		if (eating(p))
-		{
-			//printf ("im the %d philossopher\n", p->name);
-			p->die = 1;
-			break ;
-		}
+		eating(p);
+		//printf ("this philos %d have a die %ld\n", p->name, p->die);
 		sleeping_n_thinking(p);
 	}
 	return (NULL);
 }
-
 
 int	main (int ac, char **av)
 {
@@ -171,19 +168,24 @@ int	main (int ac, char **av)
 		long	total = ph[0].total;
 		while(++i < total)
 		{
-			if (ph[i].die)
+			//usleep((ph[i].time_eat / 10) * 1000);
+			//printf ("im  i == %d\n", i);
+			if (get_time() - ph[i].time_last_meal >= ph[i].time_die)
 			{
 				pthread_mutex_lock(&writing);
-				time = get_time() - ph[i].time_last_meal;			
-				printf ("\033[0;31m%ld ms %d died\033[0m\n", time, ph[i].name);
+				printf ("philo num of %d die in %ld\n", ph[i].name, get_time() - ph[i].time_last_meal);
 				int d = -1;
 				while (++d < total)
 				{
 					pthread_detach(thread[d]);
 					pthread_mutex_destroy(&forks[d]);
+					ph[i].die = 1;
 				}
+				//pthread_mutex_lock(&writing);
+				time = get_time() - ph[i].time_last_meal;			
+				printf ("\033[0;31m%ld ms %d died\033[0m\n", time, ph[i].name);
 				//pthread_mutex_unlock(&writing);
-				pthread_mutex_destroy(&writing);
+				//pthread_mutex_destroy(&writing);
 				x= 1;
 				break ;
 			}
@@ -193,12 +195,12 @@ int	main (int ac, char **av)
 	}
 
 	//printf ("end of simulation\n");
-	/*i = 0;
+	i = 0;
 	while (i < total)
 	{
 		pthread_join(thread[i], NULL);
 		i++;
-	}*/
+	}
 	return (0);
 }
 
