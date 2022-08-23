@@ -173,7 +173,6 @@ int	main (int ac, char **av)
 			if (get_time() - ph[i].time_last_meal >= ph[i].time_die)
 			{
 				pthread_mutex_lock(&writing);
-				printf ("philo num of %d die in %ld\n", ph[i].name, get_time() - ph[i].time_last_meal);
 				int d = -1;
 				while (++d < total)
 				{
@@ -181,11 +180,8 @@ int	main (int ac, char **av)
 					pthread_mutex_destroy(&forks[d]);
 					ph[i].die = 1;
 				}
-				//pthread_mutex_lock(&writing);
 				time = get_time() - ph[i].time_last_meal;			
 				printf ("\033[0;31m%ld ms %d died\033[0m\n", time, ph[i].name);
-				//pthread_mutex_unlock(&writing);
-				//pthread_mutex_destroy(&writing);
 				x= 1;
 				break ;
 			}
