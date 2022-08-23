@@ -27,7 +27,7 @@ typedef struct philosopher
 	long	time_sleep;
 	long	current_time;
 	long	time_last_meal;
-	long	die;
+	int		im_eating;
 	int		total;
 	t_data	*data;
 }	t_philos;
@@ -53,8 +53,8 @@ void	ft_usleep(long dur)
 
 void	print(char *msg, t_philos *p)
 {
+	long time = get_time() - p->current_time;
 	pthread_mutex_lock(&writing);
-	long time = get_time() - p->data->start_time;
 	printf("%ld ms %d %s\n", time, p->name, msg);
 	pthread_mutex_unlock(&writing);
 }
@@ -70,8 +70,10 @@ void	eating(t_philos *p)
 	pthread_mutex_lock(&forks[p->r_f]);
 	print ("has taken a fork", p);
 	print("\033[32mis eating\033[0m", p);
+	p->im_eating = 1;
 	p->time_last_meal = get_time();
 	ft_usleep(p->time_eat);
+	p->im_eating = 0;
 	pthread_mutex_unlock(&forks[p->l_f]);
 	pthread_mutex_unlock(&forks[p->r_f]);
 	/*printf ("this is time %ld and his name is %d\n", p->time_last_meal, p->name);
@@ -102,10 +104,10 @@ void	*routine(void *arg)
 
 	if (p->name % 2 == 0)
 		ft_usleep(50);
+	//printf ("this my thread %d and time %ld\n", p->name, get_time() - p->time_last_meal);
 	while (1)
 	{
 		eating(p);
-		//printf ("this philos %d have a die %ld\n", p->name, p->die);
 		sleeping_n_thinking(p);
 	}
 	return (NULL);
@@ -140,7 +142,7 @@ int	main (int ac, char **av)
 		ph[i].current_time = 0;
 		ph[i].data = data;
 		ph[i].time_last_meal = 10;
-		ph[i].die = 0;
+		ph[i].im_eating = 0;
 		i++;
 	};
 	i = 0;
@@ -154,7 +156,7 @@ int	main (int ac, char **av)
 	data->start_time = get_time();
 	while (++i < total) 
 	{
-		ph[i].current_time = (ph[i].data)->start_time;
+		ph[i].current_time = data->start_time;
 		ph[i].time_last_meal = get_time();
 		//printf ("%d my last meal\n", ph[i].name);
 		pthread_create(&thread[i], NULL, &routine, &ph[i]);
@@ -170,7 +172,7 @@ int	main (int ac, char **av)
 		{
 			//usleep((ph[i].time_eat / 10) * 1000);
 			//printf ("im  i == %d\n", i);
-			if (get_time() - ph[i].time_last_meal >= ph[i].time_die)
+			if (get_time() - ph[i].time_last_meal >= ph[i].time_die && !ph[i].im_eating)
 			{
 				pthread_mutex_lock(&writing);
 				int d = -1;
@@ -178,7 +180,6 @@ int	main (int ac, char **av)
 				{
 					pthread_detach(thread[d]);
 					pthread_mutex_destroy(&forks[d]);
-					ph[i].die = 1;
 				}
 				time = get_time() - ph[i].time_last_meal;			
 				printf ("\033[0;31m%ld ms %d died\033[0m\n", time, ph[i].name);
