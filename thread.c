@@ -8,7 +8,7 @@
 //if philo didn't start eating from last meal or begging the semulation they die
 
 pthread_mutex_t	*forks;
-pthread_mutex_t writing;
+pthread_mutex_t writing,meal;
 pthread_t		*thread;
 
 typedef struct data{
@@ -47,14 +47,14 @@ void	ft_usleep(long dur)
 
 	start = get_time();
 	while (get_time() - start < dur)
-		usleep(50);
+		usleep(250); 
 }
 
 
 void	print(char *msg, t_philos *p)
 {
-	long time = get_time() - p->current_time;
 	pthread_mutex_lock(&writing);
+	long time = get_time() - p->current_time;
 	printf("%ld ms %d %s\n", time, p->name, msg);
 	pthread_mutex_unlock(&writing);
 }
@@ -70,10 +70,25 @@ void	eating(t_philos *p)
 	pthread_mutex_lock(&forks[p->r_f]);
 	print ("has taken a fork", p);
 	print("\033[32mis eating\033[0m", p);
-	p->im_eating = 1;
+
+	pthread_mutex_lock(&writing);
+	p->meals_count += 1;
+
+
 	p->time_last_meal = get_time();
+
+
+	p->im_eating = 1;
+
+	pthread_mutex_unlock(&writing);
+
+
 	ft_usleep(p->time_eat);
+
+	pthread_mutex_lock(&writing);
 	p->im_eating = 0;
+	pthread_mutex_unlock(&writing);
+
 	pthread_mutex_unlock(&forks[p->l_f]);
 	pthread_mutex_unlock(&forks[p->r_f]);
 	/*printf ("this is time %ld and his name is %d\n", p->time_last_meal, p->name);
@@ -117,15 +132,30 @@ int	main (int ac, char **av)
 {
 	t_philos		*ph;
 	t_data			*data = malloc(sizeof(t_data));
+	int				must_eat;
+	int				nb_of_meals = 0;
+	int				arr[atoi(av[1])];
 
 
-	if (ac != 5)
+	if (ac < 5 || ac > 6)
 	{
 		printf ("enter all the parameters pls\n");
 		exit(1);
 	}
+	int i = -1;
+	if (av[5])
+	{
+		must_eat = atoi(av[5]);
+		while (++i < atoi(av[1]))
+		{
+			arr[i] = -1;
+			printf ("the arr[i] == %d\n", arr[i]);
+		}
+	}
+	else
+		must_eat = -1;
 	thread = malloc (sizeof(pthread_t) * atoi(av[1]));
-	int i = 0;
+	i = 0;
 	int total = atoi(av[1]);
 	ph = malloc (sizeof(t_philos) * atoi(av[1]));
 	forks = malloc (sizeof(pthread_mutex_t) * atoi(av[1]));
@@ -139,14 +169,15 @@ int	main (int ac, char **av)
 		ph[i].time_die = atoi(av[2]);
 		ph[i].time_eat = atoi(av[3]);
 		ph[i].time_sleep = atoi(av[4]);
-		ph[i].current_time = 0;
+	//	ph[i].current_time = get_time();
 		ph[i].data = data;
-		ph[i].time_last_meal = 10;
+		ph[i].meals_count = 0;
 		ph[i].im_eating = 0;
 		i++;
 	};
 	i = 0;
 	pthread_mutex_init(&writing, NULL);
+	pthread_mutex_init(&meal, NULL);
 	while (i < total)
 	{
 		pthread_mutex_init(&forks[i], NULL);
@@ -158,23 +189,45 @@ int	main (int ac, char **av)
 	{
 		ph[i].current_time = data->start_time;
 		ph[i].time_last_meal = get_time();
-		//printf ("%d my last meal\n", ph[i].name);
 		pthread_create(&thread[i], NULL, &routine, &ph[i]);
-		usleep(1);
+		usleep(50);
 	}
+
 	while (1)
 	{
-		i = -1;
+		int i = -1;
 		int x = 0;
 		long	time;
 		long	total = ph[0].total;
 		while(++i < total)
 		{
-			//usleep((ph[i].time_eat / 10) * 1000);
-			//printf ("im  i == %d\n", i);
+			//printf ("meals of %d is %d\n", ph[i].name, ph[i].meals_count);
+			pthread_mutex_lock(&writing);
+			if (ph[i].meals_count == must_eat)
+			{
+				if (arr[i] == -1)
+				{
+					arr[i] = must_eat;
+					nb_of_meals += 1;
+				}
+				if (nb_of_meals == atoi(av[1]))
+				{
+					// pthread_mutex_lock(&writing);
+					printf ("end of simulation\n");
+					/*int d = -1;
+		.			while (++d < total)
+					{
+						pthread_detach(thread[d]);
+						pthread_mutex_destroy(&forks[d]);
+					}*/
+					return (0);
+				}
+			}
+			pthread_mutex_unlock(&writing);
+			pthread_mutex_lock(&writing);
 			if (get_time() - ph[i].time_last_meal >= ph[i].time_die && !ph[i].im_eating)
 			{
-				pthread_mutex_lock(&writing);
+				// pthread_mutex_lock(&writing);
 				int d = -1;
 				while (++d < total)
 				{
@@ -183,21 +236,25 @@ int	main (int ac, char **av)
 				}
 				time = get_time() - ph[i].time_last_meal;			
 				printf ("\033[0;31m%ld ms %d died\033[0m\n", time, ph[i].name);
+				//printf ("nb_of_meals is %d and arr[0] == %d\n", nb_of_meals, arr[0]);
 				x= 1;
 				break ;
 			}
+			pthread_mutex_unlock(&writing);
 		}
 		if (x == 1)
 			break;
+	usleep(10);
 	}
-
-	//printf ("end of simulation\n");
 	i = 0;
 	while (i < total)
 	{
 		pthread_join(thread[i], NULL);
 		i++;
 	}
+
+	//printf ("end of simulation\n");
+
 	return (0);
 }
 
