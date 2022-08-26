@@ -73,18 +73,10 @@ void	eating(t_philos *p)
 
 	pthread_mutex_lock(&writing);
 	p->meals_count += 1;
-
-
 	p->time_last_meal = get_time();
-
-
 	p->im_eating = 1;
-
 	pthread_mutex_unlock(&writing);
-
-
 	ft_usleep(p->time_eat);
-
 	pthread_mutex_lock(&writing);
 	p->im_eating = 0;
 	pthread_mutex_unlock(&writing);
@@ -147,10 +139,7 @@ int	main (int ac, char **av)
 	{
 		must_eat = atoi(av[5]);
 		while (++i < atoi(av[1]))
-		{
 			arr[i] = -1;
-			printf ("the arr[i] == %d\n", arr[i]);
-		}
 	}
 	else
 		must_eat = -1;
@@ -195,8 +184,8 @@ int	main (int ac, char **av)
 
 	while (1)
 	{
-		int i = -1;
-		int x = 0;
+		int 	i = -1;
+		int 	x = 0;
 		long	time;
 		long	total = ph[0].total;
 		while(++i < total)
@@ -244,7 +233,7 @@ int	main (int ac, char **av)
 		}
 		if (x == 1)
 			break;
-	usleep(10);
+		usleep(10);
 	}
 	i = 0;
 	while (i < total)
