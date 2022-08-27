@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 13:24:36 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 16:24:31 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <signal.h>
 
 // don't forget why unlock and lock not organised in eat function
-
+// check ft_atoi it's behave very well
 
 typedef	struct data
 {
@@ -27,6 +27,7 @@ typedef	struct data
 	int			time_eat;
 	int			time_sleep;
 	long		current_time;
+	int			must_eat;
 }	t_data;
 
 typedef struct philosospher
@@ -51,3 +52,4 @@ void	sleep_n_think(t_philos *ph);
 void	eat(t_philos *ph);
 void	sleep_n_think(t_philos *ph);
 void	ft_printf(t_philos *ph, char *str);
+void	death_n_meals(t_philos *ph, int total);

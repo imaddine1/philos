@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 13:20:12 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 16:27:53 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,15 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 {
 	int	i;
 	int	total;
+	int	last_option;	
 
+
+	last_option = ft_atoi(av[5]);
 	total = ft_atoi(av[1]);
 	frk->forks = malloc(sizeof(pthread_mutex_t) * total);
 	if (!frk->forks)
 	{
-		printf ("malloc is failed\n");	
+		printf ("malloc failed\n");	
 		return ;
 	}
 	i = -1;
@@ -30,7 +33,8 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	frk->time_die = ft_atoi(av[2]);
 	frk->time_eat = ft_atoi(av[3]);
 	frk->time_sleep = ft_atoi(av[4]);
-	frk->current_time = get_time(void);
+	frk->must_eat = total;
+	frk->current_time = get_time();
 	i = -1;
 	while (++i < total)
 	{
