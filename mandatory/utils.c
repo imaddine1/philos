@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/26 18:03:53 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 13:20:12 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,31 @@
 void	initialize_data(t_philos *ph, t_data *frk, char **av)
 {
 	int	i;
+	int	total;
 
-	i = 0;
-	frk->forks = malloc(sizeof(pthread_mutex_t) * ft_atoi(av[0]));
-	ph = malloc(sizeof(t_philos) * ft_atoi(av[0]));
-	if (!frk->forks || !ph)
+	total = ft_atoi(av[1]);
+	frk->forks = malloc(sizeof(pthread_mutex_t) * total);
+	if (!frk->forks)
 	{
-		printf ("malloc is failed\n");
-		if (ph)
-			free (ph);
-		else if (frk->forks)
-			free (frk->forks);
-		return (NULL);
+		printf ("malloc is failed\n");	
+		return ;
 	}
+	i = -1;
+	while (++i < ft_atoi(av[1]))
+		pthread_mutex_init(&frk->forks[i], NULL);
 	frk->time_die = ft_atoi(av[2]);
 	frk->time_eat = ft_atoi(av[3]);
 	frk->time_sleep = ft_atoi(av[4]);
-	while (i < ft_atoi(av[0]))
+	frk->current_time = get_time(void);
+	i = -1;
+	while (++i < total)
 	{
-		pthread_mutex_init(&frk->forks[i], NULL);
-		i++;
-	}
-	
-	while (i < ft_atoi(av[0]))
-	{
-		i++;
+		ph[i].name = i + 1;
+		ph[i].im_eating = 0;
+		ph[i].meals_count = 0;
+		ph[i].l_f = i;
+		ph[i].r_f = (i + 1) % total;
+		ph[i].data = frk;
 	}
 }
 
@@ -79,15 +79,29 @@ int	check_err(char **av)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	while (av[i])
 	{
 		if (ft_atoi(av[i]) == -1)
 		{
-			printf ("your number is not integer\n");
+			printf ("your number is not integer or negative number\n");
 			return (-1);
 		}
 		i++;
 	}
 	return (0);
+}
+
+long	get_time()
+{
+	struct timeval time;
+	long			start_time;
+
+	if (gettimeofday(&time, NULL) != 0);
+	{
+		printf ("gettimeofday is failed\n");
+		return (-1);
+	}
+	start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	return (start_time);
 }
