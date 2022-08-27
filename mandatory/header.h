@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 18:43:29 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 23:33:23 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 
 // don't forget why unlock and lock not organised in eat function
 // check ft_atoi it's behave very well
+// handle number that equal or under to the zero
+// if last_option is zero than when need eat nothing
 
 typedef	struct data
 {
@@ -53,4 +55,4 @@ void	sleep_n_think(t_philos *ph);
 void	eat(t_philos *ph);
 void	sleep_n_think(t_philos *ph);
 void	ft_printf(t_philos *ph, char *str);
-void	death_n_meals(t_philos *ph, int total);
+int		death_n_meals(t_philos *ph, int total);

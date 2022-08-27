@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 19:13:23 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 23:26:11 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,12 @@ int	main(int ac, char **av)
 		pthread_create(&ph[i].philos, NULL, &routine, &ph[i]);
 		usleep(1);
 	}
-	usleep(200);
-	death_n_meals(ph, ft_atoi(av[1]));
+	usleep(50);
+	if (death_n_meals(ph, ft_atoi(av[1])) == 1)
+	{
+		return (0);
+	}
+	printf ("--->im ok\n");
 	i = -1;
 	while (++i < ft_atoi(av[1]))
 		pthread_join(ph[i].philos, NULL);

@@ -235,12 +235,12 @@ int	main (int ac, char **av)
 			break;
 		usleep(10);
 	}
-	i = 0;
+	/*i = 0;
 	while (i < total)
 	{
 		pthread_join(thread[i], NULL);
 		i++;
-	}
+	}*/
 
 	//printf ("end of simulation\n");
 
