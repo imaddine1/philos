@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 16:24:31 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 18:43:29 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct philosospher
 	int			meals_count;
 	int			l_f;
 	int			r_f;
+	long		last_meal;
 	t_data		*data;
 }	t_philos;
 

@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 16:14:36 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/27 19:13:23 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	*routine(void	*arg)
 
 	ph = (t_philos*)arg;
 	if (ph->name % 2 == 0)
-		ft_usleep(1);
+		usleep(50);
 	while (1)
 	{
 		eat(ph);
@@ -57,12 +57,14 @@ int	main(int ac, char **av)
 	initialize_data(ph, &frk, av);
 	while (++i < ft_atoi(av[1]))
 	{
-		pthread_create(ph[i].philos, NULL, &routine, &ph[i]);
-		ft_usleep(1);
+		//ph[i].data->current_time = get_time();
+		pthread_create(&ph[i].philos, NULL, &routine, &ph[i]);
+		usleep(1);
 	}
+	usleep(200);
 	death_n_meals(ph, ft_atoi(av[1]));
-	/*i = -1;
+	i = -1;
 	while (++i < ft_atoi(av[1]))
-		pthread_join(ph[i].philos, NULL);*/
+		pthread_join(ph[i].philos, NULL);
 	return (0);
 }
