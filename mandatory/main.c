@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 16:11:19 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/29 17:24:11 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	main(int ac, char **av)
 		printf ("you need to check all your parameters\n");
 		return (0);
 	}
+	if (ac == 6 && ft_atoi(av[5]) == 0)
+		return (0);
 	i = -1;
 	ph = malloc(sizeof(t_philos) * ft_atoi(av[1]));
 	if (!ph)
