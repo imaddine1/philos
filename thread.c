@@ -83,14 +83,6 @@ void	eating(t_philos *p)
 
 	pthread_mutex_unlock(&forks[p->l_f]);
 	pthread_mutex_unlock(&forks[p->r_f]);
-	/*printf ("this is time %ld and his name is %d\n", p->time_last_meal, p->name);
-	if (p->time_last_meal >= p->time_die)
-	{
-		pthread_mutex_lock(&writing);
-		return(1);
-	}
-	return (0);
-	pthread_mutex_unlock(&writing);*/
 }
 
 // sleep and think display
@@ -111,7 +103,6 @@ void	*routine(void *arg)
 
 	if (p->name % 2 == 0)
 		ft_usleep(50);
-	//printf ("this my thread %d and time %ld\n", p->name, get_time() - p->time_last_meal);
 	while (1)
 	{
 		eating(p);
@@ -158,7 +149,6 @@ int	main (int ac, char **av)
 		ph[i].time_die = atoi(av[2]);
 		ph[i].time_eat = atoi(av[3]);
 		ph[i].time_sleep = atoi(av[4]);
-	//	ph[i].current_time = get_time();
 		ph[i].data = data;
 		ph[i].meals_count = 0;
 		ph[i].im_eating = 0;

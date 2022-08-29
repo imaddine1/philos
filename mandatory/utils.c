@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/27 19:18:16 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/29 16:32:18 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 
 
 	total = ft_atoi(av[1]);
+	pthread_mutex_init(&frk->writing, NULL);
 	frk->forks = malloc(sizeof(pthread_mutex_t) * total);
 	if (!frk->forks)
 	{
@@ -28,6 +29,7 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	i = -1;
 	while (++i < ft_atoi(av[1]))
 		pthread_mutex_init(&frk->forks[i], NULL);
+	frk->number_of_philo = ft_atoi(av[1]);
 	frk->time_die = ft_atoi(av[2]);
 	frk->time_eat = ft_atoi(av[3]);
 	frk->time_sleep = ft_atoi(av[4]);
@@ -99,14 +101,14 @@ int	check_err(char **av)
 
 long	get_time()
 {
-	struct timeval time;
+	struct timeval	time;
 	long			start_time;
 
 	if (gettimeofday(&time, NULL) != 0)
 	{
-		printf ("gettimeofday is failed\n");
+		printf ("gettimeofday failed\n");
 		return (-1);
 	}
-	start_time = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+	start_time = ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 	return (start_time);
 }
