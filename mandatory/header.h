@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 18:58:06 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/29 21:37:57 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 // check ft_atoi it's behave very well
 // handle number that equal or under to the zero
 // if last_option is zero than we don't need eat nothing
+// check the initialized data
 
 typedef struct data
 {

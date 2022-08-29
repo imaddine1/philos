@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 16:32:18 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/29 21:35:36 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	int	i;
 	int	total;	
 
-
 	total = ft_atoi(av[1]);
+	frk = malloc(sizeof(t_data));
 	pthread_mutex_init(&frk->writing, NULL);
 	frk->forks = malloc(sizeof(pthread_mutex_t) * total);
 	if (!frk->forks)
@@ -46,6 +46,9 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 		ph[i].r_f = (i + 1) % total;
 		ph[i].data = frk;
 	}
+	i =-1;
+	while (++i < total)
+		printf ("name is %d\n", ph[i].name);
 }
 
 int	ft_strlen(char *str)

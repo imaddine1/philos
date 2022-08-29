@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 19:56:59 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/29 21:18:56 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int	check_death(t_philos *ph, int i, int *arr)
 {
-	long	time;
+	long			time;
+	pthread_mutex_t	write;
 
-	pthread_mutex_lock(&ph[i].data->writing);
+	pthread_mutex_init(&write, NULL);
+	pthread_mutex_lock(&write);
 	if (get_time() - ph[i].last_meal >= ph[i].data->time_die
 		&& !ph[i].im_eating)
 	{
@@ -25,7 +27,7 @@ int	check_death(t_philos *ph, int i, int *arr)
 		free (arr);
 		return (1);
 	}
-	pthread_mutex_unlock(&ph[i].data->writing);
+	pthread_mutex_unlock(&write);
 	return (0);
 }
 
@@ -70,7 +72,7 @@ int	death_n_meals(t_philos *ph, int total)
 		{
 			if (check_death(ph, i, arr))
 				return (1);
-			if (check_meals(ph, i, arr))
+			else if (check_meals(ph, i, arr))
 				return (1);
 		}
 	}
@@ -101,4 +103,5 @@ int	main(int ac, char **av)
 		usleep (1);
 	}
 	death_n_meals(ph, ft_atoi(av[1]));
+	return (0);
 }
