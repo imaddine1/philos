@@ -35,7 +35,7 @@ typedef struct philosopher
 long 	get_time(void)
 {
 	struct timeval	calcultime;
-	long	long		time;
+	long		time;
 
 	gettimeofday(&calcultime, NULL);
 	time = (calcultime.tv_sec * 1000) + (calcultime.tv_usec / 1000);
@@ -207,12 +207,12 @@ int	main (int ac, char **av)
 			if (get_time() - ph[i].time_last_meal >= ph[i].time_die && !ph[i].im_eating)
 			{
 				// pthread_mutex_lock(&writing);
-				int d = -1;
+				/*int d = -1;
 				while (++d < total)
 				{
 					pthread_detach(thread[d]);
 					pthread_mutex_destroy(&forks[d]);
-				}
+				}*/
 				time = get_time() - ph[i].time_last_meal;			
 				printf ("\033[0;31m%ld ms %d died\033[0m\n", time, ph[i].name);
 				//printf ("nb_of_meals is %d and arr[0] == %d\n", nb_of_meals, arr[0]);
