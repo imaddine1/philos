@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/30 16:09:11 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/30 18:19:49 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	if (!frk->forks)
 		return ;
 	i = -1;
-	//printf ("");
 	while (++i < ft_atoi(av[1]))
 		pthread_mutex_init(&frk->forks[i], NULL);
 	initialize_arg(frk, av);
@@ -43,12 +42,11 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 		ph[i].name = i + 1;
 		ph[i].im_eating = 0;
 		ph[i].meals_count = 0;
-		ph[i].last_meal = 0;
+		ph[i].last_meal = get_time();
 		ph[i].l_f = i;
 		ph[i].r_f = (i + 1) % total;
 		ph[i].data = frk;
 	}
-	//system ("leaks philo");
 }
 
 int	ft_strlen(char *str)

@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/30 16:27:04 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/30 18:27:05 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	check_meals(t_philos *ph, int i, int *arr)
 	static int	x;
 
 	pthread_mutex_lock(&ph->data->writing);
-	if (ph[i].meals_count >= ph[i].data->must_eat)
+	if (ph[i].meals_count == ph[i].data->must_eat)
 	{
 		if (arr[i] == -1)
 		{
@@ -116,12 +116,9 @@ int	main(int ac, char **av)
 	initialize_data(ph, &frk, av);
 	while (++i < ph->data->number_of_philo)
 	{
-		ph[i].last_meal = get_time();
 		pthread_create(&ph[i].philos, NULL, &routine, &ph[i]);
-		usleep (1);
+		usleep (10);
 	}
-	//printf ("\033[0;33m first data is %d \033[0m\n", ph[1].name);
 	death_n_meals(ph, ft_atoi(av[1]));
-	//system ("leaks philo");
 	return (0);
 }

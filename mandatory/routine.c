@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 12:59:42 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/30 14:58:10 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/30 18:22:16 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,5 @@ void	ft_usleep(long duration)
 
 	start = get_time();
 	while (get_time() - start < duration)
-		usleep(250);
+		usleep(300);
 }
