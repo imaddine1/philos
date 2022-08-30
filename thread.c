@@ -85,7 +85,6 @@ void	eating(t_philos *p)
 	pthread_mutex_unlock(&forks[p->r_f]);
 }
 
-// sleep and think display
 void sleeping_n_thinking(t_philos *p)
 {
 	print("is sleeping", p);
@@ -93,10 +92,6 @@ void sleeping_n_thinking(t_philos *p)
 	print("is thinking", p);
 }
 
-// check philosopher if diey
-
-
-// this is my routine ;
 void	*routine(void *arg)
 {
 	t_philos	*p = (t_philos *)arg;

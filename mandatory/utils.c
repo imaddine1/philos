@@ -6,11 +6,21 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 21:35:36 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/30 16:09:11 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	initialize_arg(t_data *frk, char **av)
+{
+	frk->number_of_philo = ft_atoi(av[1]);
+	frk->time_die = ft_atoi(av[2]);
+	frk->time_eat = ft_atoi(av[3]);
+	frk->time_sleep = ft_atoi(av[4]);
+	frk->must_eat = ft_atoi(av[5]);
+	frk->current_time = get_time();
+}
 
 void	initialize_data(t_philos *ph, t_data *frk, char **av)
 {
@@ -18,37 +28,27 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	int	total;	
 
 	total = ft_atoi(av[1]);
-	frk = malloc(sizeof(t_data));
 	pthread_mutex_init(&frk->writing, NULL);
 	frk->forks = malloc(sizeof(pthread_mutex_t) * total);
 	if (!frk->forks)
-	{
-		printf ("malloc failed\n");	
 		return ;
-	}
 	i = -1;
+	//printf ("");
 	while (++i < ft_atoi(av[1]))
 		pthread_mutex_init(&frk->forks[i], NULL);
-	frk->number_of_philo = ft_atoi(av[1]);
-	frk->time_die = ft_atoi(av[2]);
-	frk->time_eat = ft_atoi(av[3]);
-	frk->time_sleep = ft_atoi(av[4]);
-	frk->must_eat = ft_atoi(av[5]);
-	frk->current_time = get_time();
+	initialize_arg(frk, av);
 	i = -1;
 	while (++i < total)
 	{
 		ph[i].name = i + 1;
 		ph[i].im_eating = 0;
 		ph[i].meals_count = 0;
-		ph[i].last_meal = get_time();
+		ph[i].last_meal = 0;
 		ph[i].l_f = i;
 		ph[i].r_f = (i + 1) % total;
 		ph[i].data = frk;
 	}
-	i =-1;
-	while (++i < total)
-		printf ("name is %d\n", ph[i].name);
+	//system ("leaks philo");
 }
 
 int	ft_strlen(char *str)
@@ -58,7 +58,7 @@ int	ft_strlen(char *str)
 	i = 0;
 	while (str[i])
 		i++;
-	return (i);	
+	return (i);
 }
 
 int	ft_atoi(char *str)
@@ -85,24 +85,7 @@ int	ft_atoi(char *str)
 	return (res);
 }
 
-int	check_err(char **av)
-{
-	int	i;
-
-	i = 1;
-	while (av[i])
-	{
-		if (ft_atoi(av[i]) == -1)
-		{
-			printf ("your number is not integer or negative number\n");
-			return (-1);
-		}
-		i++;
-	}
-	return (0);
-}
-
-long	get_time()
+long	get_time(void)
 {
 	struct timeval	time;
 	long			start_time;

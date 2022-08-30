@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 12:59:42 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 21:37:36 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/30 14:58:10 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_printf(t_philos *ph, char *str)
 
 	pthread_mutex_lock(&ph->data->writing);
 	time = get_time() - ph->data->current_time;
-	printf ("%ld ms %d %s\n", get_time() - ph->data->current_time, ph->name, str);
+	printf ("%ld ms %d %s\n", time, ph->name, str);
 	pthread_mutex_unlock(&ph->data->writing);
 }
 
