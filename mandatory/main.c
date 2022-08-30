@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/29 21:18:56 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/30 13:35:11 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 int	check_death(t_philos *ph, int i, int *arr)
 {
 	long			time;
-	pthread_mutex_t	write;
 
-	pthread_mutex_init(&write, NULL);
-	pthread_mutex_lock(&write);
+	pthread_mutex_lock(&ph->data->writing);
 	if (get_time() - ph[i].last_meal >= ph[i].data->time_die
 		&& !ph[i].im_eating)
 	{
@@ -27,15 +25,14 @@ int	check_death(t_philos *ph, int i, int *arr)
 		free (arr);
 		return (1);
 	}
-	pthread_mutex_unlock(&write);
+	pthread_mutex_unlock(&ph->data->writing);
 	return (0);
 }
 
 int	check_meals(t_philos *ph, int i, int *arr)
 {
-	int	x;
+	static int	x;
 
-	x = 0;
 	pthread_mutex_lock(&ph->data->writing);
 	if (ph[i].meals_count == ph[i].data->must_eat)
 	{
@@ -46,6 +43,7 @@ int	check_meals(t_philos *ph, int i, int *arr)
 		}
 		if (x == ph[i].data->number_of_philo)
 		{
+			x = 0;
 			free (arr);
 			return (1);
 		}
