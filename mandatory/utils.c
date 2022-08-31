@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/30 18:19:49 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/31 12:39:20 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	initialize_arg(t_data *frk, char **av)
 	frk->time_sleep = ft_atoi(av[4]);
 	frk->must_eat = ft_atoi(av[5]);
 	frk->current_time = get_time();
+	pthread_mutex_init(&frk->writing, NULL);
 }
 
 void	initialize_data(t_philos *ph, t_data *frk, char **av)
@@ -28,7 +29,6 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	int	total;	
 
 	total = ft_atoi(av[1]);
-	pthread_mutex_init(&frk->writing, NULL);
 	frk->forks = malloc(sizeof(pthread_mutex_t) * total);
 	if (!frk->forks)
 		return ;
