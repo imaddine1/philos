@@ -6,17 +6,25 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/31 12:41:13 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/31 13:26:21 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	check_err(char **av)
+int	check_err(int ac, char **av)
 {
 	int	i;
 
 	i = 1;
+	if ((ac == 6 && !ft_atoi(av[5])) || !ft_atoi(av[1]) || !ft_atoi(av[2])
+		|| !ft_atoi(av[3]) || !ft_atoi(av[4]))
+		return (-1);
+	if (ac < 5 || ac > 6)
+	{
+		printf ("you need to check your argements\n");
+		return (-1);
+	}
 	while (av[i])
 	{
 		if (ft_atoi(av[i]) == -1)
@@ -41,6 +49,7 @@ int	check_death(t_philos *ph, int i, int *arr)
 		printf ("\033[0;31m%ld ms %d is died\033[0m\n", time, ph[i].name);
 		free (arr);
 		free (ph->data->forks);
+		free (ph->data);
 		return (1);
 	}
 	pthread_mutex_unlock(&ph->data->writing);
@@ -64,6 +73,7 @@ int	check_meals(t_philos *ph, int i, int *arr)
 			x = 0;
 			free (arr);
 			free (ph->data->forks);
+			free (ph->data);
 			return (1);
 		}
 	}
@@ -102,13 +112,9 @@ int	main(int ac, char **av)
 	t_data		*frk;
 	int			i;
 
-	if (ac < 5 || ac > 6 || check_err(av))
-	{
-		printf ("you need to check all your argements\n");
+	if (check_err(ac, av) == -1)
 		return (0);
-	}
-	if ((ac == 6 && ft_atoi(av[5]) == 0) || ft_atoi(av[1]) == 0)
-		return (0);
+
 	i = -1;
 	ph = malloc(sizeof(t_philos) * ft_atoi(av[1]));
 	if (!ph)

@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/31 12:35:12 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/31 13:26:00 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct philosospher
 
 int		ft_strlen(char *str);
 int		ft_atoi(char *str);
-int		check_err(char **av);
+int		check_err(int ac, char **av);
 void	initialize_data(t_philos *ph, t_data *frk, char **av);
 long	get_time(void);
 void	ft_usleep(long duration);

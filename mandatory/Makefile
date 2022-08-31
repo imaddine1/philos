@@ -6,7 +6,7 @@
 #    By: iharile <iharile@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/27 19:48:42 by iharile           #+#    #+#              #
-#    Updated: 2022/08/30 14:57:23 by iharile          ###   ########.fr        #
+#    Updated: 2022/08/31 12:58:50 by iharile          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJET = $(FILES:.c=.o)
 all: $(NAME)
 
 $(NAME) : $(OBJET)
-	$(CC) $(CFLAGS) $(SANITIZE)  $(THREAD) $(OBJET) -o $(NAME)
+	$(CC) $(CFLAGS) $(THREAD) $(SANITIZE) $(OBJET) -o $(NAME)
 clean :
 	rm -rf $(OBJET)
 
