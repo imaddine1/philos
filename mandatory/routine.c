@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 12:59:42 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/01 09:31:34 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/01 12:47:19 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	eat(t_philos *ph)
 
 void	sleep_n_think(t_philos *ph)
 {
-	ft_printf(ph, "im sleeping");
+	ft_printf(ph, "is sleeping");
 	ft_usleep(ph->data->time_sleep);
-	ft_printf(ph, "im thinking");
+	ft_printf(ph, "is thinking");
 }
 
 void	ft_printf(t_philos *ph, char *str)
