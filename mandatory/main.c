@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/31 13:26:21 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/31 19:50:30 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ int	main(int ac, char **av)
 
 	if (check_err(ac, av) == -1)
 		return (0);
-
 	i = -1;
 	ph = malloc(sizeof(t_philos) * ft_atoi(av[1]));
 	if (!ph)

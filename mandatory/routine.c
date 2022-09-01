@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 12:59:42 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/31 12:31:27 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/01 09:31:34 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*routine(void	*arg)
 
 	ph = (t_philos *)arg;
 	if (ph->name % 2 == 0)
-		usleep(50);
+		usleep(100);
 	while (1)
 	{
 		eat(ph);

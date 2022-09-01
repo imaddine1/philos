@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/31 13:26:00 by iharile          ###   ########.fr       */
+/*   Updated: 2022/08/31 19:22:49 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 // if last_option is zero than we don't need eat nothing
 // check the initialized data
 // ./philo 100 300 100 100
+// ./philo 2 400 100 100 1 after many execution the dead lock happend
 
 typedef struct data
 {
