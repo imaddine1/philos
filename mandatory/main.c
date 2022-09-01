@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/01 12:35:41 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/01 14:51:23 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ int	death_n_meals(t_philos *ph, int total)
 	}
 	return (0);
 }
-
 
 int	main(int ac, char **av)
 {
