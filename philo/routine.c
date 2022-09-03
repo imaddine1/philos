@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 12:59:42 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/01 12:47:19 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/03 20:20:46 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	eat(t_philos *ph)
 	ft_printf(ph, "has taken a fork");
 	pthread_mutex_lock(&ph->data->forks[ph->r_f]);
 	ft_printf(ph, "has taken a fork");
-	ft_printf(ph, "\033[32mim eating\033[0m");
+	ft_printf(ph, "\033[32m is eating\033[0m");
 	pthread_mutex_lock(&ph->data->writing);
 	ph->im_eating = 1;
 	ph->meals_count += 1;
@@ -56,11 +56,9 @@ void	sleep_n_think(t_philos *ph)
 
 void	ft_printf(t_philos *ph, char *str)
 {
-	long	time;
-
 	pthread_mutex_lock(&ph->data->writing);
-	time = get_time() - ph->data->current_time;
-	printf ("%ld ms %d %s\n", time, ph->name, str);
+	printf ("%ld ms %d %s\n", get_time() - ph->start_time,
+		ph->name, str);
 	pthread_mutex_unlock(&ph->data->writing);
 }
 

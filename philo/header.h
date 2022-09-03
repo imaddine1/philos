@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/08/31 19:22:49 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/03 20:25:43 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ typedef struct data
 	int				time_die;
 	int				time_eat;
 	int				time_sleep;
-	long			current_time;
 	int				must_eat;
 }		t_data;
 
 typedef struct philosospher
 {
 	pthread_t	philos;
+	long		start_time;
 	int			name;
 	int			im_eating;
 	int			meals_count;

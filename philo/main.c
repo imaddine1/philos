@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/01 14:51:23 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/03 20:24:43 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,12 @@ int	check_err(int ac, char **av)
 
 int	check_death(t_philos *ph, int i, int *arr)
 {
-	long			time;
-
 	pthread_mutex_lock(&ph->data->writing);
 	if (get_time() - ph[i].last_meal >= ph[i].data->time_die
 		&& !ph[i].im_eating)
 	{
-		time = get_time() - ph[i].last_meal;
-		printf ("\033[0;31m%ld ms %d is died\033[0m\n", time, ph[i].name);
+		printf ("\033[0;31m%ld ms %d is died\033[0m\n",
+			get_time() - ph[i].start_time, ph[i].name);
 		free (arr);
 		free (ph->data->forks);
 		free (ph->data);
@@ -105,6 +103,7 @@ int	death_n_meals(t_philos *ph, int total)
 			else if (check_meals(ph, i, arr))
 				return (1);
 		}
+		usleep (10);
 	}
 	return (0);
 }
