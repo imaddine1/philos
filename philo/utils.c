@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:34:55 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/03 20:22:45 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/04 11:47:38 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	initialize_data(t_philos *ph, t_data *frk, char **av)
 	while (++i < total)
 	{
 		ph[i].name = i + 1;
-		ph[i].start_time = get_time();
+		ph[i].start_time = start_time;
 		ph[i].im_eating = 0;
 		ph[i].meals_count = 0;
 		ph[i].last_meal = start_time;
@@ -78,23 +78,34 @@ int	ft_atoi(char *str)
 	{
 		if (str[i] >= '0' && str[i] <= '9')
 			res = res * 10 + (str[i] - 48);
-		else if (!(str[i] >= '0' && str[i] <= '9') || res > 2147483647)
+		if (!(str[i] >= '0' && str[i] <= '9') || res > 2147483647)
 			return (-1);
 		i++;
 	}
 	return (res);
 }
 
-long	get_time(void)
+int	check_err(int ac, char **av)
 {
-	struct timeval	time;
-	long			start_time;
+	int	i;
 
-	if (gettimeofday(&time, NULL) != 0)
+	i = 1;
+	if ((ac == 6 && !ft_atoi(av[5])) || !ft_atoi(av[1]) || !ft_atoi(av[2])
+		|| !ft_atoi(av[3]) || !ft_atoi(av[4]))
+		return (-1);
+	if (ac < 5 || ac > 6)
 	{
-		printf ("gettimeofday failed\n");
+		printf ("you need to check your argements\n");
 		return (-1);
 	}
-	start_time = ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-	return (start_time);
+	while (av[i])
+	{
+		if (ft_atoi(av[i]) == -1)
+		{
+			printf ("your number is not integer or negative number\n");
+			return (-1);
+		}
+		i++;
+	}
+	return (0);
 }

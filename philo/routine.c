@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 12:59:42 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/03 20:20:46 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/04 11:48:06 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	*routine(void	*arg)
 	while (1)
 	{
 		eat(ph);
-		sleep_n_think(ph);
 	}
 	return (NULL);
 }
@@ -45,13 +44,23 @@ void	eat(t_philos *ph)
 	pthread_mutex_unlock(&ph->data->writing);
 	pthread_mutex_unlock(&ph->data->forks[ph->l_f]);
 	pthread_mutex_unlock(&ph->data->forks[ph->r_f]);
-}
-
-void	sleep_n_think(t_philos *ph)
-{
 	ft_printf(ph, "is sleeping");
 	ft_usleep(ph->data->time_sleep);
 	ft_printf(ph, "is thinking");
+}
+
+long	get_time(void)
+{
+	struct timeval	time;
+	long			start_time;
+
+	if (gettimeofday(&time, NULL) != 0)
+	{
+		printf ("gettimeofday failed\n");
+		return (-1);
+	}
+	start_time = ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	return (start_time);
 }
 
 void	ft_printf(t_philos *ph, char *str)

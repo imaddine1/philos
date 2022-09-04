@@ -6,7 +6,7 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:28 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/03 20:25:43 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/04 11:45:00 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <signal.h>
-// color \033[0;33m    \033[0m
-// don't forget why unlock and lock not organised in eat function
-// check ft_atoi it's behave very well
-// handle number that equal or under to the zero
-// if last_option is zero than we don't need eat nothing
-// check the initialized data
-// ./philo 100 300 100 100
-// ./philo 2 400 100 100 1 after many execution the dead lock happend
 
 typedef struct data
 {

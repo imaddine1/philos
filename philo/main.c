@@ -6,35 +6,21 @@
 /*   By: iharile <iharile@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 15:29:52 by iharile           #+#    #+#             */
-/*   Updated: 2022/09/03 20:24:43 by iharile          ###   ########.fr       */
+/*   Updated: 2022/09/04 11:45:28 by iharile          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	check_err(int ac, char **av)
+void	destroy_mutex(t_philos *ph)
 {
 	int	i;
 
-	i = 1;
-	if ((ac == 6 && !ft_atoi(av[5])) || !ft_atoi(av[1]) || !ft_atoi(av[2])
-		|| !ft_atoi(av[3]) || !ft_atoi(av[4]))
-		return (-1);
-	if (ac < 5 || ac > 6)
-	{
-		printf ("you need to check your argements\n");
-		return (-1);
-	}
-	while (av[i])
-	{
-		if (ft_atoi(av[i]) == -1)
-		{
-			printf ("your number is not integer or negative number\n");
-			return (-1);
-		}
-		i++;
-	}
-	return (0);
+	i = -1;
+	while (++i < ph->data->number_of_philo)
+		pthread_mutex_destroy(&ph->data->forks[i]);
+	free (ph->data->forks);
+	pthread_mutex_destroy(&ph->data->writing);
 }
 
 int	check_death(t_philos *ph, int i, int *arr)
@@ -46,8 +32,6 @@ int	check_death(t_philos *ph, int i, int *arr)
 		printf ("\033[0;31m%ld ms %d is died\033[0m\n",
 			get_time() - ph[i].start_time, ph[i].name);
 		free (arr);
-		free (ph->data->forks);
-		free (ph->data);
 		return (1);
 	}
 	pthread_mutex_unlock(&ph->data->writing);
@@ -72,8 +56,6 @@ int	check_meals(t_philos *ph, int i, int *arr)
 		{
 			x = 0;
 			free (arr);
-			free (ph->data->forks);
-			free (ph->data);
 			printf ("\033[0;34mEND OF SIMULATION\033[0m\n");
 			return (1);
 		}
@@ -127,8 +109,9 @@ int	main(int ac, char **av)
 	while (++i < ph->data->number_of_philo)
 	{
 		pthread_create(&ph[i].philos, NULL, &routine, &ph[i]);
-		usleep (10);
+		usleep(10);
 	}
 	death_n_meals(ph, ft_atoi(av[1]));
+	destroy_mutex(ph);
 	return (0);
 }
